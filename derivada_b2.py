@@ -1,11 +1,11 @@
 """
-Sample code automatically generated on 2024-06-10 15:42:04
+Sample code automatically generated on 2024-06-20 22:27:30
 
 by www.matrixcalculus.org
 
 from input
 
-d/db ((tanh(w'*i+b)+1)/2-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)
+d/db (((tanh(w'*i+b) + 1)/2) - d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)
 
 where
 
@@ -21,7 +21,7 @@ from __future__ import division, print_function, absolute_import
 
 import numpy as np
 
-def fAndG_db(b, d, i, w):
+def fAndG(b, d, i, w):
     if isinstance(b, np.ndarray):
         dim = b.shape
         assert dim == (1, )
