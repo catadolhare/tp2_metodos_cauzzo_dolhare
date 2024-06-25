@@ -1,11 +1,11 @@
 """
-Sample code automatically generated on 2024-06-10 15:42:04
+Sample code automatically generated on 2024-06-25 16:37:14
 
 by www.matrixcalculus.org
 
 from input
 
-d/db ((tanh(w'*i+b)+1)/2-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)
+d/dw (((tanh((w'*i)+b)+1)/2)-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)*i
 
 where
 
@@ -41,7 +41,7 @@ def fAndG(b, d, i, w):
     t_0 = np.tanh((b + (w).dot(i)))
     t_1 = (((1 + t_0) / 2) - d)
     functionValue = (t_1 ** 2)
-    gradient = ((1 - (t_0 ** 2)) * t_1)
+    gradient = (((1 - (t_0 ** 2)) * t_1) * i)
 
     return functionValue, gradient
 
@@ -50,12 +50,12 @@ def checkGradient(b, d, i, w):
     # f(x + t * delta) - f(x - t * delta) / (2t)
     # should be roughly equal to inner product <g, delta>
     t = 1E-6
-    delta = float(np.random.randn(1))
-    f1, _ = fAndG(b + t * delta, d, i, w)
-    f2, _ = fAndG(b - t * delta, d, i, w)
+    delta = np.random.randn(3)
+    f1, _ = fAndG(b, d, i, w + t * delta)
+    f2, _ = fAndG(b, d, i, w - t * delta)
     f, g = fAndG(b, d, i, w)
     print('approximation error',
-          np.linalg.norm((f1 - f2) / (2*t) - np.tensordot(g, delta, axes=0)))
+          np.linalg.norm((f1 - f2) / (2*t) - np.tensordot(g, delta, axes=1)))
 
 def generateRandomData():
     b = np.random.randn(1)

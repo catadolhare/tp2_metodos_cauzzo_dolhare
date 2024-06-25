@@ -91,13 +91,28 @@ def func_L(w, b, imagenes, diagnosticos):
         sumatoria += t_2
     return sumatoria
 
+def f(i, w, b):
+    tan = np.tanh(np.dot(w, i) + b)
+    tan_mas_uno = tan + 1
+    return tan_mas_uno/2
+
+def error_cuadratico_medio(imagenes, diagnosticos, w, b):
+    error_total = 0
+    for i in imagenes:
+        error = (f(i, w, b) - diagnosticos[i])**2
+        error_total += error
+
+    return error_total/len(imagenes)
+
 def gradiente_descendiente():
     carpeta_normal = "chest_xray/train/NORMAL"
     imagenes_normal = abrirImagenesEscaladas(carpeta_normal, 64)
+    print(len(imagenes_normal))
     diagnosticos_normal = [0] * len(imagenes_normal)
 
     carpeta_neumonia = "chest_xray/train/NEUMONIA"
     imagenes_neumonia = abrirImagenesEscaladas(carpeta_neumonia, 64)
+    print(len(imagenes_neumonia))
     diagnosticos_neumonia = [1] * len(imagenes_neumonia)
 
     imagenes = imagenes_normal + imagenes_neumonia
@@ -114,6 +129,8 @@ def gradiente_descendiente():
 
     w = w0
     b = b0
+
+    errores = []
     
     while iter <= MAX_ITER:
         print("Iteración: ", iter, "- Mínimo alcanzado hasta el momento: ", func_L(w, b, imagenes, diagnosticos))
@@ -123,6 +140,9 @@ def gradiente_descendiente():
 
         prox_w = w - alpha * gradient_dw
         prox_b = b - alpha * gradient_db
+
+        error = error_cuadratico_medio(imagenes, diagnosticos, prox_w, prox_b)
+        errores.append(error)
 
         diferencia = func_L(prox_w, prox_b, imagenes, diagnosticos) - func_L(w, b, imagenes, diagnosticos)
         
@@ -134,12 +154,13 @@ def gradiente_descendiente():
 
         iter += 1
     
-    return w, b
+    return w, b, errores
 
 def main():
-    w, b = gradiente_descendiente()
+    w, b, errores = gradiente_descendiente()
     print("El vector w que minimiza es: ", w)
     print("El escalar b que minimiza es: ", b)
+    print(errores)
 
 if __name__ == "__main__":
     main()

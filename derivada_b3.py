@@ -1,11 +1,11 @@
 """
-Sample code automatically generated on 2024-06-10 15:42:04
+Sample code automatically generated on 2024-06-25 16:37:32
 
 by www.matrixcalculus.org
 
 from input
 
-d/db ((tanh(w'*i+b)+1)/2-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)
+d/db (((tanh((w'*i)+b)+1)/2)-d)^2 = (1-tanh(b+w'*i).^2)*((1+tanh(b+w'*i))/2-d)
 
 where
 
